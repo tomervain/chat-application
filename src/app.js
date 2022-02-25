@@ -1,11 +1,14 @@
 import { LitElement, html, css } from 'lit';
+import { io } from 'socket.io-client'
+
 import { UsersList } from './components/users-list';
 import { ChatBox } from './components/chatbox';
 
 class App extends LitElement {
     static properties = {
         _loggedIn: { attribute: false },
-        _nameValue: { attribute: false }
+        _nameValue: { attribute: false },
+        _socket: { attribute: false }
     }
 
     static styles = css`
@@ -89,6 +92,7 @@ class App extends LitElement {
         super();
         this._loggedIn = false;
         this._nameValue = "";
+        this._socket = io();
     }
 
     loginTemplate = () => html`
@@ -112,11 +116,17 @@ class App extends LitElement {
     chatTemplate = () => html`
         <div class="chat-container">
             <app-users-list class="users-list"></app-users-list>
-            <app-chatbox class="chatbox"></app-chatbox>
+            <app-chatbox class="chatbox" @newMessage="${this._onNewMessage}"></app-chatbox>
         </div>
     `;
 
+    socketInit() {
+        this._socket.on('message', message => console.log(message));
+    }
+
     render() {
+        this.socketInit();
+
         return this._loggedIn ?
             this.chatTemplate() :
             this.loginTemplate();
@@ -129,6 +139,10 @@ class App extends LitElement {
     _login() {
         console.log(`logged in as ${this._nameValue}`);
         this._loggedIn = true;
+    }
+
+    _onNewMessage(e) {
+        this._socket.emit('chatMessage', e.detail.message);
     }
 }
 

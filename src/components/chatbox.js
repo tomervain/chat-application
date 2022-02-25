@@ -2,7 +2,8 @@ import { LitElement, html, css } from 'lit';
 
 export class ChatBox extends LitElement {
     static properties = {
-        messages: {}
+        messages: {},
+        _input : { attribute: false }
     }
 
     static styles = css`
@@ -83,6 +84,7 @@ export class ChatBox extends LitElement {
 
     constructor() {
         super();
+        this._input = "";
         this.messages = [
             { author: "Mister Mime", text: "Are we meeting today? Project has been already finished and I have results to show you.", time: "22:12, Today" },
             { author: "Arnold", text: "Yes, lets meet after lunch!", time: "22:16, Today" },
@@ -94,6 +96,8 @@ export class ChatBox extends LitElement {
             { author: "Mister Mime", text: "Both of you can join, i hope i won't bore you to death :)", time: "22:22, Today" },
             { author: "John Doe", text: "Great!", time: "22:24, Today" }
         ]
+
+
     }
 
     messageTemplate = (author, text, time) => html`
@@ -115,12 +119,32 @@ export class ChatBox extends LitElement {
                         </ul>
                     </div>
                     <div class="chat-form">
-                        <input name="message-to-send" id="message-to-send" placeholder="Type your message">
-                        <button>Send</button>
+                        <input id="message-to-send" 
+                            placeholder="Type your message" 
+                            .value="${this._input}" 
+                            @input="${this._onInput}">
+                        <button @click="${this._onSendClick}">Send</button>
                     </div>
                 </div>
             </div>
         `;
+    }
+
+    _onInput = (e) => this._input = e.target.value;
+
+    _onSendClick() {
+        this._dispatchSubmitNewMessageEvent(this._input);
+        this._input = ""; // clear input text
+    };
+
+    _dispatchSubmitNewMessageEvent(text) {
+        let event = new CustomEvent('newMessage', {
+            detail: { message: text },
+            bubbles: true,
+            composed: true
+        });
+
+        this.dispatchEvent(event);
     }
 }
 
