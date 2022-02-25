@@ -2,18 +2,20 @@
   "name": "chat-application",
   "version": "1.0.0",
   "description": "simple chat application built with node.js and vanilla client",
-  "main": "index.js",
   "scripts": {
-    "serve": "wds --node-resolve --app-index index.html --watch",
-    "start": "npm run serve",
+    "build": "npm run clean && parcel build index.html --dist-dir dist",
+    "clean": "rm -rf ./dist && rm -rf ./.parcel-cache",
+    "serve": "node server.js",
+    "start": "npm run build && npm run serve",
     "test": "echo \"no tests implemented!\""
   },
   "author": "tomervain",
   "license": "ISC",
   "devDependencies": {
-    "@web/dev-server": "^0.1.30"
+    "parcel": "^2.3.2"
   },
   "dependencies": {
+    "express": "^4.17.3",
     "lit": "^2.2.0"
   }
 }

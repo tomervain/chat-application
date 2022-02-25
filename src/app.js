@@ -1,5 +1,4 @@
 import { LitElement, html, css } from 'lit';
-
 import { UsersList } from './components/users-list';
 import { ChatBox } from './components/chatbox';
 
