@@ -22,11 +22,18 @@ app.use(express.static(path.join(__dirname, 'dist')));
 io.on('connection', socket => {
     socket.on('login', name => {
         userService.addUser(socket.id, name);
-        console.log(userService.users);
+
+        let activeUsers = {};
+        Object.values(userService.users).forEach(user => activeUsers[user.name] = user.color);
+
+        io.emit('userAdded', activeUsers);
     });
 
     socket.on('disconnect', () => {
+        let userName = userService.users[socket.id].name;
         userService.removeUser(socket.id);
+
+        io.emit('userRemoved', userName);
     });
 
     socket.on('chatMessage', message => {
@@ -39,8 +46,6 @@ io.on('connection', socket => {
             color: color,
             time: moment().format('HH:mm')
         });
-
-        // this is where the chatbot will read it and do something
     });
 });
 

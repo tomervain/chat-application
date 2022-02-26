@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import { UserItem } from './user'
+
 export class UsersList extends LitElement {
     static properties = {
         users: {},
@@ -27,16 +29,7 @@ export class UsersList extends LitElement {
 
     constructor() {
         super();
-        this.users = [
-            "Arnold",
-            "Mister Mime",
-            "Donny Darko",
-            "Peter Parker",
-            "Vin Diesel",
-            "John Doe",
-            "Duke Nukem",
-            "Dukee Nukee"
-        ]
+        this.users = {}
     }
 
     render() {
@@ -44,7 +37,7 @@ export class UsersList extends LitElement {
             <div class="users-list">
                 <h1>Active Users</h1>
                 <ul>
-                    ${this.users.map((user) => html`<li class="user">${user}</li>`)}                                      
+                    ${Object.keys(this.users).map(user => html`<app-user name=${user} color=${this.users[user]}></app-user>`)}                                      
                 </ul>
             </div>
         `;

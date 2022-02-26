@@ -1,12 +1,36 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 
+:root {
+    --blue-100: #a3cbfb;
+    --indigo-100: #caa9f7;
+    --purple-100: #ccbbe7;
+    --pink-100: #f5b6d2;
+    --red-100: #f7b6bd;
+    --orange-100: #ffd1ad;
+    --yellow-100: #ffe9ab;
+    --green-100: #addfbe;
+    --teal-100: #a7ecda;
+    --cyan-100: #a4dee4;
+
+    --blue-200: #78b4fb;
+    --indigo-200: #b183f4;
+    --purple-200: #b59ddc;
+    --pink-200: #f195be;
+    --red-200: #f4969f;
+    --orange-200: #ffbc8a;
+    --yellow-200: #ffdf86;
+    --green-200: #86d1a0;
+    --teal-200: #7de3ca;
+    --cyan-200: #7acfd9;
+}
+
 * {
-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-background: #c5ddeb;
-font: 14px/20px "Lato", sans-serif;
-padding: 0;
-color: white;
+    background: #c5ddeb;
+    font: 14px/20px "Lato", sans-serif;
+    padding: 0;
+    color: white;
 }

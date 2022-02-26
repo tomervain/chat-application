@@ -35,7 +35,7 @@ class App extends LitElement {
         super();
         this._loggedIn = false;
         this._user = "";
-        this._activeUsers = ["Arnold"];
+        this._activeUsers = {};
         this._messages = [];
     }
 
@@ -43,7 +43,7 @@ class App extends LitElement {
 
     chatTemplate = () => html`
         <div class="chat-container">
-            <app-users-list class="users-list"></app-users-list>
+            <app-users-list class="users-list" .users=${this._activeUsers}></app-users-list>
             <app-chatbox class="chatbox" 
                 .messages=${this._messages} 
                 @newMessage="${this._onNewMessage}">
@@ -52,8 +52,14 @@ class App extends LitElement {
     `;
 
     socketInit() {
-        this._socket.on('message', data => {
-            console.log(`${data.message}, your color is ${data.color}`);
+        this._socket.on('userAdded', async (users) => {
+            this._activeUsers = users;
+            await this.shadowRoot.querySelector('.users-list').requestUpdate();
+        });
+
+        this._socket.on('userRemoved', async (name) => {
+            delete this._activeUsers[name];
+            await this.shadowRoot.querySelector('.users-list').requestUpdate();
         });
 
         this._socket.on('chatMessage', message => {
@@ -72,8 +78,6 @@ class App extends LitElement {
         this._socket = io();
         this.socketInit();
         this._socket.emit('login', this._user);
-        
-        console.log(`logged in as ${this._user}`);
         this._loggedIn = true;
     }
 
