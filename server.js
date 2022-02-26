@@ -2,7 +2,11 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const moment = require('moment');
 
+const { UserService } = require('./src/services/user-service');
+
+const userService = new UserService();
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -16,16 +20,27 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // initialize socket server events
 io.on('connection', socket => {
-    socket.emit('message', 'Welcome to chat application');
-
-    socket.broadcast.emit('message', 'another user has connected');
+    socket.on('login', name => {
+        userService.addUser(socket.id, name);
+        console.log(userService.users);
+    });
 
     socket.on('disconnect', () => {
-        io.emit('message', 'a user has left the chat');
+        userService.removeUser(socket.id);
     });
 
     socket.on('chatMessage', message => {
-        console.log(`new message: ${message}`);
+        let color = userService[message.user];
+
+        // emit message to all users
+        io.emit('chatMessage', {
+            user: message.user,
+            text: message.text,
+            color: color,
+            time: moment().format('HH:mm')
+        });
+
+        // this is where the chatbot will read it and do something
     });
 });
 

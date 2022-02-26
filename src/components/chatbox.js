@@ -85,19 +85,6 @@ export class ChatBox extends LitElement {
     constructor() {
         super();
         this._input = "";
-        this.messages = [
-            { author: "Mister Mime", text: "Are we meeting today? Project has been already finished and I have results to show you.", time: "22:12, Today" },
-            { author: "Arnold", text: "Yes, lets meet after lunch!", time: "22:16, Today" },
-            { author: "Vin Diesel", text: "I'm Groot!", time: "22:18, Today" },
-            { author: "John Doe", text: "Can i join the meeting?", time: "22:19, Today" },
-            { author: "Arnold", text: "Sure thing! But do i know you?", time: "22:20, Today" },
-            { author: "John Doe", text: "Nobody knows me, i'm a little bit anonymous around here", time: "22:21, Today" },
-            { author: "Peter Parker", text: "I wanna join too!", time: "22:21, Today" },
-            { author: "Mister Mime", text: "Both of you can join, i hope i won't bore you to death :)", time: "22:22, Today" },
-            { author: "John Doe", text: "Great!", time: "22:24, Today" }
-        ]
-
-
     }
 
     messageTemplate = (author, text, time) => html`

@@ -32,6 +32,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "lit": "^2.2.0",
+    "moment": "^2.29.1",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1"
   }

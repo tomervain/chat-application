@@ -9,7 +9,9 @@ class App extends LitElement {
     static properties = {
         _loggedIn: { attribute: false },
         _socket: { attribute: false },
-        _user: { attribute: false }
+        _user: { attribute: false },
+        _activeUsers: {},
+        _messages: {}
     }
 
     static styles = css`
@@ -31,8 +33,10 @@ class App extends LitElement {
 
     constructor() {
         super();
-        this._loggedIn = false;      
+        this._loggedIn = false;
         this._user = "";
+        this._activeUsers = ["Arnold"];
+        this._messages = [];
     }
 
     loginTemplate = () => html`<app-login @loginSubmit="${this._onLogin}"></app-login>`;
@@ -40,30 +44,54 @@ class App extends LitElement {
     chatTemplate = () => html`
         <div class="chat-container">
             <app-users-list class="users-list"></app-users-list>
-            <app-chatbox class="chatbox" @newMessage="${this._onNewMessage}"></app-chatbox>
+            <app-chatbox class="chatbox" 
+                .messages=${this._messages} 
+                @newMessage="${this._onNewMessage}">
+            </app-chatbox>
         </div>
     `;
 
     socketInit() {
-        this._socket.on('message', message => console.log(message));
+        this._socket.on('message', data => {
+            console.log(`${data.message}, your color is ${data.color}`);
+        });
+
+        this._socket.on('chatMessage', message => {
+            this._addNewMessageToChat(message);
+        });
     }
 
-    render() {       
+    render() {
         return this._loggedIn ?
             this.chatTemplate() :
             this.loginTemplate();
     }
 
     _onLogin(e) {
+        this._user = e.detail.loginName;
         this._socket = io();
         this.socketInit();
-        this._user = e.detail.loginName;
+        this._socket.emit('login', this._user);
+        
         console.log(`logged in as ${this._user}`);
         this._loggedIn = true;
     }
 
     _onNewMessage(e) {
-        this._socket.emit('chatMessage', e.detail.message);
+        this._socket.emit('chatMessage', {
+            user: this._user,
+            text: e.detail.message
+        });
+    }
+
+    async _addNewMessageToChat(message) {
+        this._messages.push({
+            author: message.user,
+            text: message.text,
+            time: message.time
+        });
+
+        await this.shadowRoot.querySelector('.chatbox').requestUpdate();
     }
 }
 
