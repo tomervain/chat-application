@@ -5,6 +5,7 @@ const socketio = require('socket.io');
 const moment = require('moment');
 
 const { UserService } = require('./src/services/user-service');
+const { ChatbotService } = require('./src/services/chatbot-service');
 
 const userService = new UserService();
 const app = express();
@@ -22,7 +23,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
 io.on('connection', socket => {
     socket.on('login', name => {
         userService.addUser(socket.id, name);
-
         let activeUsers = {};
         Object.values(userService.users).forEach(user => activeUsers[user.name] = user.color);
 
@@ -37,7 +37,7 @@ io.on('connection', socket => {
     });
 
     socket.on('chatMessage', message => {
-        let color = userService[message.user];
+        let color = userService.users[socket.id].color;
 
         // emit message to all users
         io.emit('chatMessage', {
@@ -48,6 +48,10 @@ io.on('connection', socket => {
         });
     });
 });
+
+// run chatbot service
+const botService = new ChatbotService('Arnold', PORT);
+botService.initialize();
 
 // run http server
 server.listen(PORT, () => {

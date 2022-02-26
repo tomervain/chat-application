@@ -6,7 +6,7 @@ class UserService {
 
     constructor() {
         this._colors = {
-            "blue": 1, // chatbot is using this color
+            "blue": 0,
             "indigo": 0,
             "purple": 0,
             "pink": 0,

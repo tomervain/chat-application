@@ -1,16 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 
 :root {
-    --blue-100: #a3cbfb;
-    --indigo-100: #caa9f7;
-    --purple-100: #ccbbe7;
-    --pink-100: #f5b6d2;
-    --red-100: #f7b6bd;
-    --orange-100: #ffd1ad;
-    --yellow-100: #ffe9ab;
-    --green-100: #addfbe;
-    --teal-100: #a7ecda;
-    --cyan-100: #a4dee4;
+    --blue-600: #005cd1;
+    --indigo-600: #570fc6;
+    --purple-600: #5e379f;
+    --pink-600: #bc2c6e;
+    --red-600: #c12e3d;
+    --orange-600: #dd6a26;
+    --yellow-600: #dba22b;
+    --green-600: #008c40;
+    --teal-600: #00a980;
+    --cyan-600: #008899;
 
     --blue-200: #78b4fb;
     --indigo-200: #b183f4;

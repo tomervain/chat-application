@@ -90,9 +90,10 @@ class App extends LitElement {
 
     async _addNewMessageToChat(message) {
         this._messages.push({
-            author: message.user,
+            user: message.user,
             text: message.text,
-            time: message.time
+            time: message.time,
+            color: message.color
         });
 
         await this.shadowRoot.querySelector('.chatbox').requestUpdate();

@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import { MessageItem } from './message'
+
 export class ChatBox extends LitElement {
     static properties = {
         messages: {},
@@ -23,37 +25,6 @@ export class ChatBox extends LitElement {
             display: flex;
             flex-direction: column-reverse;
             list-style-type: none;
-        }
-        .chatbox .chat-area .message-data {
-            margin-bottom: 15px;
-        }
-        .chatbox .chat-area .message-data-time {
-            color: #a8aab1;
-            padding-left: 6px;
-        }
-        .chatbox .chat-area .message {
-            color: white;
-            background: #86bb71;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
-            margin-bottom: 30px;
-            width: 95%;
-            position: relative;
-        }
-        .chatbox .chat-area .message:after {
-            bottom: 100%;
-            left: 7%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-bottom-color: #86bb71;
-            border-width: 10px;
-            margin-left: -10px;
         }
         .chatbox .chat-form {
             padding: 17px 30px 10px;
@@ -102,7 +73,13 @@ export class ChatBox extends LitElement {
             <div class="chatbox">
                     <div class="chat-area">
                         <ul>
-                            ${this.messages.map((message) => this.messageTemplate(message.author, message.text, message.time))}
+                            ${this.messages.map(message => html`
+                            <app-message 
+                                user=${message.user}
+                                text=${message.text}
+                                time=${message.time}
+                                color=${message.color}>
+                            </app-message>`)}
                         </ul>
                     </div>
                     <div class="chat-form">
