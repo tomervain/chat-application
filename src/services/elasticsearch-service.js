@@ -1,7 +1,6 @@
 const { Client } = require('@elastic/elasticsearch');
 
 const NODE = 'http://localhost:9200';
-const USER = 'elastic'
 const INDEX = 'chatapp'
 
 class ElasticsearchService {

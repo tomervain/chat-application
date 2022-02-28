@@ -43,6 +43,7 @@ export class MessageItem extends LitElement {
     render() {
         const messageColor = `background: var(--${this.color}-600)`;
         const messageBorder = `border-bottom-color: var(--${this.color}-600)`;
+        let outText = this.text.split('<br/>');
 
         return html`
             <li>
@@ -50,7 +51,9 @@ export class MessageItem extends LitElement {
                     <span class="message-data-name">${this.user}</span>
                     <span class="message-data-time">${this.time}</span>
                 </div>
-                <div class="message" style="${messageColor}; ${messageBorder};">${this.text}</div>
+                <div class="message" style="${messageColor}; ${messageBorder};">
+                    ${outText.length < 2 ? outText[0] : outText.map(t => html`${t}<br/>`)}
+                </div>
             </li>
         `;
     }
