@@ -24,19 +24,7 @@ export class MessageItem extends LitElement {
             border-radius: 7px;
             margin-bottom: 30px;
             width: 95%;
-            position: relative;
-        }
-        .message:after {
-            bottom: 100%;
-            left: 7%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-            border-width: 10px;
-            margin-left: -10px;
+            position: relative;           
         }
     `;
 

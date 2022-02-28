@@ -24,6 +24,7 @@ export class ChatBox extends LitElement {
         .chatbox .chat-area ul {
             display: flex;
             flex-direction: column-reverse;
+            align-items: flex-start;
             list-style-type: none;
         }
         .chatbox .chat-form {
@@ -57,16 +58,6 @@ export class ChatBox extends LitElement {
         super();
         this._input = "";
     }
-
-    messageTemplate = (author, text, time) => html`
-        <li>
-            <div class="message-data">
-                <span class="message-data-name">${author}</span>
-                <span class="message-data-time">${time}</span>
-            </div>
-            <div class="message my-message">${text}</div>
-        </li>
-    `;
 
     render() {
         return html`
