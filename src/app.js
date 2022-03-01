@@ -1,9 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import { io } from 'socket.io-client'
-
-import { Login } from './components/login';
-import { UsersList } from './components/users-list';
-import { ChatBox } from './components/chatbox';
+import './components/login';
+import './components/users-list';
+import './components/chatbox';
 
 class App extends LitElement {
     static properties = {
@@ -22,10 +21,16 @@ class App extends LitElement {
             display: flex;
             flex-direction: column;
         }
-        .chat-container .users-list {
+        .users-list {
             max-height: 180px;
             overflow-y: scroll;
             text-align: center;
+        }
+        .chatbox {
+            width: 100%;
+            background: #f2f5f8;
+            color: #434651;
+            height: 100%;
         }
 
         @media only screen and (min-width: 768px) {
@@ -34,12 +39,12 @@ class App extends LitElement {
                 height: 800px;
                 width: 80%;
             }
-            .chat-container .users-list {
+            .users-list {
                 width: 250px;
                 max-height: none;
                 overflow-y: auto;
             }
-            .chat-container .chatbox {
+            .chatbox {
                 width: calc(100% - 250px);
             }
         }
@@ -58,9 +63,7 @@ class App extends LitElement {
     chatTemplate = () => html`
         <div class="chat-container">
             <app-users-list class="users-list" .users=${this._activeUsers}></app-users-list>
-            <app-chatbox class="chatbox" 
-                .messages=${this._messages} 
-                @newMessage="${this._onNewMessage}">
+            <app-chatbox class="chatbox" .messages=${this._messages} @newMessage="${this._onNewMessage}">
             </app-chatbox>
         </div>
     `;

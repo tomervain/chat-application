@@ -6,7 +6,7 @@ const { answers } = require('../resources/bot-answers');
 class ChatbotService {
     constructor(botName, port) {
         this.name = botName,
-        this.port = port
+            this.port = port
         this.socket = io(`ws://localhost:${this.port}`);
         this.elasticService = new ElasticsearchService();
         this.questionFlag = false;
@@ -26,10 +26,13 @@ class ChatbotService {
 
             // if question flag is on
             if (this.questionFlag) {
-                // and another question came, override
+                // and another question came, override (unless answer is known)
                 if (message.text.includes('?')) {
+                    if (await this._attemptAnswer(message.text))
+                        return;
+
                     this.question = message.text;
-                } else {                    
+                } else {
                     // else its considered a new answer
                     await this.elasticService.saveQuestionAndAnswer(this.question, message.text);
                     this.question = "";
@@ -38,22 +41,25 @@ class ChatbotService {
 
                 return;
             } else if (message.text.includes('?')) {
-                // look for answer, if exist answer it
-                const answer = await this.elasticService.lookForAnswer(message.text);
-                
-                if (answer != null) {
-                    this._answerToChat(answer);
-
-                    this.question = "";
-                    this.questionFlag = false;
+                if (await this._attemptAnswer(message.text))
                     return;
-                }
 
                 this.question = message.text;
                 this.questionFlag = true;
-                return;
             }
         });
+    }
+
+    async _attemptAnswer(question) {
+        const answer = await this.elasticService.lookForAnswer(question);
+
+        if (answer === null)
+            return false;
+
+        this._answerToChat(answer);
+        this.question = "";
+        this.questionFlag = false;
+        return true;
     }
 
     _answerToChat(answer) {

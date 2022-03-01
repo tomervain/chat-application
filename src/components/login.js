@@ -19,12 +19,12 @@ export class Login extends LitElement {
             text-align: center;
             padding-top: 5px;
         }
-        .login-container .login-page {
+        .login-page {
             width: 360px;
             padding: 2% 0 0;
             margin: auto;
         }
-        .login-container .form {
+        .form {
             position: relative;
             z-index: 1;
             background: white;
@@ -34,7 +34,7 @@ export class Login extends LitElement {
             text-align: center;
             box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
-        .login-container .form input {
+        .form input {
             outline: 0;
             background: #f2f2f2;
             width: 100%;
@@ -44,23 +44,23 @@ export class Login extends LitElement {
             box-sizing: border-box;
             font-size: 14px;
         }
-        .login-container .form button {
+        .form button {
             text-transform: uppercase;
             outline: 0;
             background: #5491ca;
             width: 100%;
             border: 0;
             padding: 15px;
-            color: #FFFFFF;
+            color: white;
             font-size: 14px;
             -webkit-transition: all 0.3 ease;
             transition: all 0.3 ease;
             cursor: pointer;
         }
-        .login-container .form button:hover {
+        .form button:hover {
             background: #4689c8;
         }
-        .login-container .form .message {
+        .message {
             padding-bottom: 10px;
             color: #434752;
             font-size: 16px;
@@ -77,7 +77,7 @@ export class Login extends LitElement {
                 font-size: 3rem;
                 padding-top: 80px;
             }
-            .login-container .login-page {
+            .login-page {
                 padding: 5% 0 0;
             }
         }
