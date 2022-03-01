@@ -23,7 +23,7 @@ class ElasticsearchService {
     async lookForAnswer(question) {
         const results = await this.client.search({
             index: INDEX,
-            query: { match: { question: question } }
+            query: { match_phrase: { question: question } }
         });
 
         if (results.hits.total.value === 0)

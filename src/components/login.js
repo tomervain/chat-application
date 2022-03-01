@@ -8,20 +8,20 @@ export class Login extends LitElement {
     static styles = css`
         .login-container {
             margin: 0 auto;
-            height: 800px;
-            width: 80%;
+            padding: 10px;
             background: #444753;
             border-radius: 0;
         }
         .login-container h1 {
-            font-size: 3rem;
+            font: 13px "Lato", sans-serif;
+            font-size: 2rem;
             font-weight: 300;
             text-align: center;
-            padding-top: 80px;
+            padding-top: 5px;
         }
         .login-container .login-page {
             width: 360px;
-            padding: 5% 0 0;
+            padding: 2% 0 0;
             margin: auto;
         }
         .login-container .form {
@@ -65,6 +65,22 @@ export class Login extends LitElement {
             color: #434752;
             font-size: 16px;
         }
+
+        @media only screen and (min-width: 992px) {
+            .login-container {
+                height: 800px;
+                width: 80%;
+                padding: auto;
+            }
+            .login-container h1 {
+                font: 14px/20px "Lato", sans-serif;
+                font-size: 3rem;
+                padding-top: 80px;
+            }
+            .login-container .login-page {
+                padding: 5% 0 0;
+            }
+        }
     `;
 
     constructor() {
@@ -80,10 +96,7 @@ export class Login extends LitElement {
                     <div class="form">
                         <div class="login-form">
                             <p class="message">Please enter your name for the chat:</p>
-                            <input type="text" 
-                                placeholder="name" 
-                                .value="${this._value}" 
-                                @input="${this._onInput}"/>
+                            <input type="text" placeholder="name" .value="${this._value}" @input="${this._onInput}"/>
                             <button @click="${this._dispatchSubmitEvent}">enter</button>                       
                         </div>
                     </div>
