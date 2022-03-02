@@ -15,37 +15,43 @@ class App extends LitElement {
 
     static styles = css`
         .chat-container {
+            height: 98vh;
             margin: 0 auto;
-            background: #444753;
-            border-radius: 0;
             display: flex;
             flex-direction: column;
+            background: #444753;
         }
         .users-list {
-            max-height: 180px;
+            min-height: 18vh;
+            max-height: 18vh;
             overflow-y: scroll;
             text-align: center;
         }
         .chatbox {
             width: 100%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             background: #f2f5f8;
             color: #434651;
-            height: 100%;
         }
 
         @media only screen and (min-width: 768px) {
             .chat-container {
-                flex-direction: row;
                 height: 800px;
                 width: 80%;
+                flex-direction: row;
             }
             .users-list {
                 width: 250px;
+                min-height: none;
                 max-height: none;
                 overflow-y: auto;
             }
             .chatbox {
                 width: calc(100% - 250px);
+                max-height: none;
             }
         }
     `;

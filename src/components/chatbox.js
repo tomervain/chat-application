@@ -4,46 +4,58 @@ import './message'
 export class ChatBox extends LitElement {
     static properties = {
         messages: {},
-        _input : { attribute: false }
+        _input: { attribute: false }
     }
 
     static styles = css`
         .chat-area {
-            padding: 30px 30px 20px;
+            padding: 5px 20px;
+            height: 100%;
+            flex-grow: 1;
             border-bottom: 2px solid white;
-            overflow-y: auto;
-            height: 650px;
+            overflow-y: scroll;
         }
         .chat-area ul {
+            margin-right: 20px;
+            padding-left: 0;
             display: flex;
             flex-direction: column-reverse;
             align-items: flex-start;
             list-style-type: none;
         }
         .chat-form {
-            padding: 17px 30px 10px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
         }
         .chat-form input {
             width: 100%;
+            padding: 10px;
             border: none;
-            padding: 8px 10px;
+            border-radius: 5px 0px 0px 5px;
             font: 16px/22px "Lato", Arial, sans-serif;
-            margin-bottom: 10px;
-            border-radius: 5px;
             resize: none;
         }
         .chat-form button {
-            float: right;
-            color: #94c2ed;
-            font-size: 1rem;
+            background: #444753;
+            color: #f2f5f8;
             text-transform: uppercase;
+            font-weight: bold; 
             border: none;
+            border-radius: 0px 5px 5px 0px;
             cursor: pointer;
-            font-weight: bold;
-            background: #f2f5f8;
         }
         .chat-form button:hover {
             color: #75b1e8;
+        }
+
+        @media only screen and (min-width: 768px) {
+            .chat-area {
+                height: 650px;
+            }
+            .chat-area ul {
+                padding-left: 40px;
+            }
         }
     `;
 
