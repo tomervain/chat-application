@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 
 export class Login extends LitElement {
     static properties = {
+        users: {},
         _value: { attribute: false }
     }
 
@@ -9,15 +10,14 @@ export class Login extends LitElement {
         .login-container {
             margin: 0 auto;
             padding: 10px;
-            background: #444753;
-            border-radius: 0;
+            background: var(--theme-dark);
         }
         .login-container h1 {
-            font: 13px "Lato", sans-serif;
+            padding-top: 5px;
+            text-align: center;
             font-size: 2rem;
             font-weight: 300;
-            text-align: center;
-            padding-top: 5px;
+            line-height: 42px
         }
         .login-page {
             width: 360px;
@@ -25,23 +25,25 @@ export class Login extends LitElement {
             margin: auto;
         }
         .form {
+            margin: 0 auto 100px;
+            padding: 45px;
+            max-width: 360px;
             position: relative;
             z-index: 1;
             background: white;
-            max-width: 360px;
-            margin: 0 auto 100px;
-            padding: 45px;
+            box-shadow: 
+                0 0 20px 0 rgba(0, 0, 0, 0.2), 
+                0 5px 5px 0 rgba(0, 0, 0, 0.24);
             text-align: center;
-            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
         }
         .form input {
-            outline: 0;
-            background: #f2f2f2;
             width: 100%;
-            border: 0;
             margin: 0 0 15px;
             padding: 15px;
+            border: 0;
+            outline: 0;
             box-sizing: border-box;
+            background: #f2f2f2;
             font-size: 14px;
         }
         .form button {
@@ -62,8 +64,8 @@ export class Login extends LitElement {
         }
         .message {
             padding-bottom: 10px;
-            color: #434752;
             font-size: 16px;
+            color: #434752;
         }
 
         @media only screen and (min-width: 992px) {
@@ -73,9 +75,9 @@ export class Login extends LitElement {
                 padding: auto;
             }
             .login-container h1 {
-                font: 14px/20px "Lato", sans-serif;
-                font-size: 3rem;
                 padding-top: 80px;
+                font-size: 3rem;
+                line-height: 20px;
             }
             .login-page {
                 padding: 5% 0 0;
@@ -96,8 +98,12 @@ export class Login extends LitElement {
                     <div class="form">
                         <div class="login-form">
                             <p class="message">Please enter your name for the chat:</p>
-                            <input type="text" placeholder="name" .value="${this._value}" @input="${this._onInput}"/>
-                            <button @click="${this._dispatchSubmitEvent}">enter</button>                       
+                            <input type="text" 
+                                   placeholder="name" 
+                                   .value="${this._value}" 
+                                   @input="${this._onInput}" 
+                                   @keyup="${this._onKeyUp}"/>
+                            <button @click="${this._onClick}">enter</button>                       
                         </div>
                     </div>
                 </div>
@@ -107,7 +113,17 @@ export class Login extends LitElement {
 
     _onInput = (e) => this._value = e.target.value;
 
-    _dispatchSubmitEvent() {
+    _onClick() {
+        this._dispatchLoginEvent();
+    }
+
+    _onKeyUp(e) {
+        console.log(Object.keys(this.users));
+        if (e.key === 'Enter')
+            this._dispatchLoginEvent();
+    }
+
+    _dispatchLoginEvent() {
         let event = new CustomEvent('loginSubmit', {
             detail: { loginName: this._value },
             bubbles: true,

@@ -33,12 +33,12 @@ export class ChatBox extends LitElement {
             padding: 10px;
             border: none;
             border-radius: 5px 0px 0px 5px;
-            font: 16px/22px "Lato", Arial, sans-serif;
-            resize: none;
+            font-size: 16px;
+            line-height: 22px;
         }
         .chat-form button {
-            background: #444753;
-            color: #f2f5f8;
+            background: var(--theme-dark);
+            color: var(--theme-light);
             text-transform: uppercase;
             font-weight: bold; 
             border: none;
@@ -69,29 +69,37 @@ export class ChatBox extends LitElement {
             <div class="chat-area">
                 <ul>
                     ${this.messages.map(message => html`
-                    <app-message 
-                        user=${message.user}
-                        text=${message.text}
-                        time=${message.time}
-                        color=${message.color}>
-                    </app-message>`)}
+                        <app-message user=${message.user}
+                                     text=${message.text}
+                                     time=${message.time}
+                                     color=${message.color}>
+                        </app-message>
+                    `)}
                 </ul>
             </div>
             <div class="chat-form">
-                <input  placeholder="Type your message" 
-                        .value="${this._input}" 
-                        @input="${this._onInput}">
+                <input placeholder="Type your message" 
+                       .value="${this._input}" 
+                       @input="${this._onInput}"
+                       @keyup="${this._onKeyUp}">
 
-                <button @click="${this._onSendClick}">Send</button>
+                <button @click="${this._onClick}">Send</button>
             </div>      
         `;
     }
 
     _onInput = (e) => this._input = e.target.value;
 
-    _onSendClick() {
+    _onClick() {
         this._dispatchSubmitNewMessageEvent(this._input);
-        this._input = ""; // clear input text
+        this._input = "";
+    };
+
+    _onKeyUp(e) {
+        if (e.key === 'Enter') {
+            this._dispatchSubmitNewMessageEvent(this._input);
+            this._input = "";
+        }    
     };
 
     _dispatchSubmitNewMessageEvent(text) {

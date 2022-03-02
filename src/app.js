@@ -19,7 +19,7 @@ class App extends LitElement {
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            background: #444753;
+            background: var(--theme-dark);
         }
         .users-list {
             min-height: 18vh;
@@ -29,14 +29,24 @@ class App extends LitElement {
         }
         .chatbox {
             width: 100%;
+            min-height: 80vh;
             max-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            background: #f2f5f8;
-            color: #434651;
+            background: var(--theme-light);
+            color: var(--theme-dark);
         }
 
+        .hide-scroll {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scroll::-webkit-scrollbar {
+            background: transparent;
+            width: 0px;
+        }
+        
         @media only screen and (min-width: 768px) {
             .chat-container {
                 height: 800px;
@@ -51,6 +61,7 @@ class App extends LitElement {
             }
             .chatbox {
                 width: calc(100% - 250px);
+                min-height: none;
                 max-height: none;
             }
         }
@@ -64,11 +75,11 @@ class App extends LitElement {
         this._messages = [];
     }
 
-    loginTemplate = () => html`<app-login @loginSubmit="${this._onLogin}"></app-login>`;
+    loginTemplate = () => html`<app-login .users=${this._activeUsers} @loginSubmit="${this._onLogin}"></app-login>`;
 
     chatTemplate = () => html`
         <div class="chat-container">
-            <app-users-list class="users-list" .users=${this._activeUsers}></app-users-list>
+            <app-users-list class="users-list hide-scroll" .users=${this._activeUsers}></app-users-list>
             <app-chatbox class="chatbox" .messages=${this._messages} @newMessage="${this._onNewMessage}">
             </app-chatbox>
         </div>

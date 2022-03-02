@@ -8,8 +8,8 @@ export class UsersList extends LitElement {
 
     static styles = css`
         h1 {
-            font-size: 1.5rem;
             margin: 25px auto;
+            font-size: 1.5rem;
             font-weight: bold;
         }
         ul {
