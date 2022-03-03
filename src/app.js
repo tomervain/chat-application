@@ -75,13 +75,12 @@ class App extends LitElement {
         this._messages = [];
     }
 
-    loginTemplate = () => html`<app-login .users=${this._activeUsers} @loginSubmit="${this._onLogin}"></app-login>`;
+    loginTemplate = () => html`<app-login @loginSubmit="${this._onLogin}"></app-login>`;
 
     chatTemplate = () => html`
         <div class="chat-container">
             <app-users-list class="users-list hide-scroll" .users=${this._activeUsers}></app-users-list>
-            <app-chatbox class="chatbox" .messages=${this._messages} @newMessage="${this._onNewMessage}">
-            </app-chatbox>
+            <app-chatbox class="chatbox" .messages=${this._messages} @newMessage="${this._onNewMessage}"></app-chatbox>
         </div>
     `;
 

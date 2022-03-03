@@ -118,7 +118,6 @@ export class Login extends LitElement {
     }
 
     _onKeyUp(e) {
-        console.log(Object.keys(this.users));
         if (e.key === 'Enter')
             this._dispatchLoginEvent();
     }
