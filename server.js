@@ -1,5 +1,6 @@
 const path = require('path');
 const http = require('http');
+const config = require('config');
 const express = require('express');
 const socketio = require('socket.io');
 const moment = require('moment');
@@ -7,14 +8,14 @@ const moment = require('moment');
 const { UserService } = require('./src/services/user-service');
 const { ChatbotService } = require('./src/services/chatbot-service');
 
+const serverConfig = config.get('server');
 const userService = new UserService();
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const ANSI_NORM = "\x1b[0m"; // default, reset
-const ANSI_LINK = "\x1b[94;1m"; // bold, bright blue
-const PORT = process.env.PORT || 8000;
+const ANSI_NORM = "\x1b[0m"; // ansi reset
+const ANSI_LINK = "\x1b[94;1m"; // ansi bold bright blue
 
 // set dist as static folder (containing the bundled client)
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -60,11 +61,14 @@ io.on('connection', socket => {
 });
 
 // run chatbot service
-const botService = new ChatbotService('Arnold', PORT);
+const botService = new ChatbotService();
 botService.initialize();
 
 // run http server
-server.listen(PORT, () => {
+server.listen(serverConfig.port, () => {
+    let host = serverConfig.host;
+    let port = serverConfig.port;
+
     process.stdout.write("Chat Application Server is running in");
-    console.log(ANSI_LINK, `http://localhost:${PORT}`, ANSI_NORM);
+    console.log(ANSI_LINK, `http://${host}:${port}`, ANSI_NORM);
 });

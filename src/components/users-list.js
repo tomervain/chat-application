@@ -27,8 +27,9 @@ export class UsersList extends LitElement {
         return html`
             <h1>Active Users</h1>
             <ul>
-                ${Object.keys(this.users).map(user => 
-                    html`<app-user name=${user} color=${this.users[user]}></app-user>`)}                                      
+                ${Object.keys(this.users).map(user => html`
+                    <app-user name=${user} color=${this.users[user]}></app-user>
+                `)}                                      
             </ul>
         `;
     }

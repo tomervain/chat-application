@@ -1,14 +1,22 @@
+const config = require('config');
 const io = require('socket.io-client');
 const { ElasticsearchService } = require('./elasticsearch-service');
 
+const { sample } = require('../utilities/array-utils');
 const { answers } = require('../resources/bot-answers');
 
+const serverConfig = config.get('server');
+const botConfig = config.get('chatbot');
+
 class ChatbotService {
-    constructor(botName, port) {
-        this.name = botName,
-            this.port = port
-        this.socket = io(`ws://localhost:${this.port}`);
+    constructor() {
+        let host = serverConfig.host;
+        let port = serverConfig.port;
+
+        this.name = botConfig.botName,
+        this.socket = io(`ws://${host}:${port}`);
         this.elasticService = new ElasticsearchService();
+
         this.questionFlag = false;
         this.question = "";
     }
@@ -40,6 +48,7 @@ class ChatbotService {
                 }
 
                 return;
+
             } else if (message.text.includes('?')) {
                 if (await this._attemptAnswer(message.text))
                     return;
@@ -63,8 +72,7 @@ class ChatbotService {
     }
 
     _answerToChat(answer) {
-        // pick a random answer
-        let botAnswer = answers[answers.length * Math.random() << 0]
+        let botAnswer = sample(answers);
 
         this.socket.emit('chatMessage', {
             user: this.name,

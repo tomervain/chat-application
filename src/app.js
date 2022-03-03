@@ -75,23 +75,38 @@ class App extends LitElement {
         this._messages = [];
     }
 
-    loginTemplate = () => html`<app-login @loginSubmit="${this._onLogin}"></app-login>`;
+    loginTemplate = () => html`
+        <app-login @loginSubmit="${this._onLogin}"></app-login>
+    `;
 
     chatTemplate = () => html`
         <div class="chat-container">
-            <app-users-list class="users-list hide-scroll" .users=${this._activeUsers}></app-users-list>
-            <app-chatbox class="chatbox" .messages=${this._messages} @newMessage="${this._onNewMessage}"></app-chatbox>
+            <app-users-list 
+                class="users-list hide-scroll" 
+                .users=${this._activeUsers}>
+            </app-users-list>
+            <app-chatbox 
+                class="chatbox" 
+                .messages=${this._messages} 
+                @newMessage="${this._onNewMessage}">
+            </app-chatbox>
         </div>
     `;
 
-    socketInit() {
+    render() {
+        return this._loggedIn ?
+            this.chatTemplate() :
+            this.loginTemplate();
+    }
+
+    _socketInit() {
         this._socket.on('login', success => {
             if (success) {
                 this._loggedIn = true;
                 return;
             }
             
-            alert("username is already taken");
+            alert("This name is currently taken by someone else!");
         });
 
         this._socket.on('userAdded', async (users) => {
@@ -109,16 +124,10 @@ class App extends LitElement {
         });
     }
 
-    render() {
-        return this._loggedIn ?
-            this.chatTemplate() :
-            this.loginTemplate();
-    }
-
     _onLogin(e) {
         this._user = e.detail.loginName;
         this._socket = io();
-        this.socketInit();
+        this._socketInit();
         this._socket.emit('login', this._user);
     }
 

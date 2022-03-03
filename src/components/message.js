@@ -9,22 +9,20 @@ export class MessageItem extends LitElement {
     }
 
     static styles = css`
-        .message-data {
-            margin-bottom: 15px;
-        }
+        .message-data { margin-bottom: 15px; }
         .message-data-time {
-            color: #a8aab1;
             padding-left: 6px;
+            color: #a8aab1;
         }
         .message {
-            color: white;
-            padding: 18px 20px;
-            line-height: 26px;
-            font-size: 16px;
-            border-radius: 7px;
-            margin-bottom: 30px;
             width: 95%;
+            margin-bottom: 30px;
+            padding: 18px 20px;
             position: relative;           
+            border-radius: 7px;
+            color: white;
+            font-size: 16px;
+            line-height: 26px;
         }
     `;
 

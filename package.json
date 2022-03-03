@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.0.0",
+    "config": "^3.3.7",
     "express": "^4.17.3",
     "lit": "^2.2.0",
     "moment": "^2.29.1",

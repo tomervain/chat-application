@@ -2,8 +2,7 @@ import { LitElement, html, css } from 'lit';
 
 export class Login extends LitElement {
     static properties = {
-        users: {},
-        _value: { attribute: false }
+        _value: {}
     }
 
     static styles = css`
@@ -31,9 +30,7 @@ export class Login extends LitElement {
             position: relative;
             z-index: 1;
             background: white;
-            box-shadow: 
-                0 0 20px 0 rgba(0, 0, 0, 0.2), 
-                0 5px 5px 0 rgba(0, 0, 0, 0.24);
+            box-shadow: var(--login-shadow);
             text-align: center;
         }
         .form input {
@@ -47,21 +44,17 @@ export class Login extends LitElement {
             font-size: 14px;
         }
         .form button {
-            text-transform: uppercase;
-            outline: 0;
-            background: #5491ca;
             width: 100%;
-            border: 0;
             padding: 15px;
+            outline: 0;
+            border: 0;
+            background: #5491ca;
             color: white;
             font-size: 14px;
-            -webkit-transition: all 0.3 ease;
-            transition: all 0.3 ease;
+            text-transform: uppercase;
             cursor: pointer;
         }
-        .form button:hover {
-            background: #4689c8;
-        }
+        .form button:hover { background: #4689c8; }
         .message {
             padding-bottom: 10px;
             font-size: 16px;
@@ -79,9 +72,7 @@ export class Login extends LitElement {
                 font-size: 3rem;
                 line-height: 20px;
             }
-            .login-page {
-                padding: 5% 0 0;
-            }
+            .login-page { padding: 5% 0 0; }
         }
     `;
 
@@ -98,11 +89,12 @@ export class Login extends LitElement {
                     <div class="form">
                         <div class="login-form">
                             <p class="message">Please enter your name for the chat:</p>
-                            <input type="text" 
-                                   placeholder="name" 
-                                   .value="${this._value}" 
-                                   @input="${this._onInput}" 
-                                   @keyup="${this._onKeyUp}"/>
+                            <input 
+                                type="text" 
+                                placeholder="name" 
+                                .value="${this._value}" 
+                                @input="${this._onInput}" 
+                                @keyup="${this._onKeyUp}"/>
                             <button @click="${this._onClick}">enter</button>                       
                         </div>
                     </div>
@@ -113,9 +105,7 @@ export class Login extends LitElement {
 
     _onInput = (e) => this._value = e.target.value;
 
-    _onClick() {
-        this._dispatchLoginEvent();
-    }
+    _onClick = () => this._dispatchLoginEvent();
 
     _onKeyUp(e) {
         if (e.key === 'Enter')

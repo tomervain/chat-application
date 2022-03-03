@@ -1,3 +1,5 @@
+const { sample } = require('../utilities/array-utils');
+
 class UserService {
     static metrics = {
         _colors: {},
@@ -38,8 +40,7 @@ class UserService {
     _pickColor() {
         let minCount = Math.min(...Object.values(this._colors));
         let avaialbleColors = Object.keys(this._colors).filter(c => this._colors[c] === minCount);
-    
-        return avaialbleColors[avaialbleColors.length * Math.random() << 0]
+        return sample(avaialbleColors);
     }
 }
 

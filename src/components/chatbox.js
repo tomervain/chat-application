@@ -45,17 +45,11 @@ export class ChatBox extends LitElement {
             border-radius: 0px 5px 5px 0px;
             cursor: pointer;
         }
-        .chat-form button:hover {
-            color: #75b1e8;
-        }
+        .chat-form button:hover { color: #75b1e8; }
 
         @media only screen and (min-width: 768px) {
-            .chat-area {
-                height: 650px;
-            }
-            .chat-area ul {
-                padding-left: 40px;
-            }
+            .chat-area { height: 650px; }
+            .chat-area ul { padding-left: 40px; }
         }
     `;
 
@@ -69,20 +63,21 @@ export class ChatBox extends LitElement {
             <div class="chat-area">
                 <ul>
                     ${this.messages.map(message => html`
-                        <app-message user=${message.user}
-                                     text=${message.text}
-                                     time=${message.time}
-                                     color=${message.color}>
+                        <app-message 
+                            user=${message.user}
+                            text=${message.text}
+                            time=${message.time}
+                            color=${message.color}>
                         </app-message>
                     `)}
                 </ul>
             </div>
             <div class="chat-form">
-                <input placeholder="Type your message" 
-                       .value="${this._input}" 
-                       @input="${this._onInput}"
-                       @keyup="${this._onKeyUp}">
-
+                <input 
+                    placeholder="Type your message" 
+                    .value="${this._input}" 
+                    @input="${this._onInput}"
+                    @keyup="${this._onKeyUp}">
                 <button @click="${this._onClick}">Send</button>
             </div>      
         `;
@@ -99,7 +94,7 @@ export class ChatBox extends LitElement {
         if (e.key === 'Enter') {
             this._dispatchSubmitNewMessageEvent(this._input);
             this._input = "";
-        }    
+        }
     };
 
     _dispatchSubmitNewMessageEvent(text) {

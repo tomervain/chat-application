@@ -1,0 +1,16 @@
+{
+    "server": {
+        "host": "localhost",
+        "port": 8000
+    },
+    "chatbot": {
+        "botName": "Arnold"
+    },
+    "elasticsearch": {
+        "node": {
+            "host": "localhost",
+            "port": 9200
+        },
+        "index": "chatapp"
+    }
+}

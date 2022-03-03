@@ -25,6 +25,10 @@
 
     --theme-dark: #444753;
     --theme-light: #f2f5f8;
+
+    --shadow1: 0 0 20px 0 #00000033;
+    --shadow2: 0 5px 5px 0 #0000003d;
+    --login-shadow: var(--shadow1), var(--shadow2);
 }
 
 * {
