@@ -85,6 +85,15 @@ class App extends LitElement {
     `;
 
     socketInit() {
+        this._socket.on('login', success => {
+            if (success) {
+                this._loggedIn = true;
+                return;
+            }
+            
+            alert("username is already taken");
+        });
+
         this._socket.on('userAdded', async (users) => {
             this._activeUsers = users;
             await this.shadowRoot.querySelector('.users-list').requestUpdate();
@@ -111,7 +120,6 @@ class App extends LitElement {
         this._socket = io();
         this.socketInit();
         this._socket.emit('login', this._user);
-        this._loggedIn = true;
     }
 
     _onNewMessage(e) {

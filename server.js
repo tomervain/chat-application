@@ -22,11 +22,21 @@ app.use(express.static(path.join(__dirname, 'dist')));
 // initialize socket server events
 io.on('connection', socket => {
     socket.on('login', name => {
-        userService.addUser(socket.id, name);
         let activeUsers = {};
         Object.values(userService.users).forEach(user => activeUsers[user.name] = user.color);
 
+        if (Object.keys(activeUsers).includes(name))
+        {
+            socket.emit('login', false);
+            return;
+        }
+
+        
+        userService.addUser(socket.id, name);   
+        Object.values(userService.users).forEach(user => activeUsers[user.name] = user.color);
+
         io.emit('userAdded', activeUsers);
+        socket.emit('login', true);
     });
 
     socket.on('disconnect', () => {
