@@ -20,6 +20,7 @@ class ChatbotService {
         this.userCount = 0;
         this.questionFlag = false;
         this.question = "";
+        this.userAsked = "";
     }
 
     initialize() {
@@ -33,6 +34,10 @@ class ChatbotService {
             if (message.user === this.name)
                 return;
 
+            // ignore if the previous message made by the same user
+            if (message.user === this.userAsked)
+                return;
+
             // a previous question was asked before
             if (this.questionFlag) {
 
@@ -41,7 +46,7 @@ class ChatbotService {
                     if (await this._attemptAnswer(message.text))
                         return;
 
-                    this._setQuestion(message.text);
+                    this._setQuestion(message.text, message.user);
 
                 } else {
                     await this.elasticService.saveQuestionAndAnswer(this.question, message.text);
@@ -56,18 +61,18 @@ class ChatbotService {
                 if (await this._attemptAnswer(message.text))
                     return;
 
-                this._setQuestion(message.text);
+                this._setQuestion(message.text, message.user);
             }
         });
 
         this.socket.on('userAdded', () => this.userCount++);
 
-        this.socket.on('userRemoved', name => {
+        this.socket.on('userRemoved', () => {
             this.userCount--;
 
-            // reset conversation state if chat is empty
-            if (this.userCount == 0)
-                this._resetQuestionState();
+            // reset conversation state if chat is empty (except bot)
+            if (this.userCount == 1)
+                this._resetQuestionState();          
         });
     }
 
@@ -94,14 +99,16 @@ class ChatbotService {
 
     _questionAsked = (text) => text.includes('?');
 
-    _setQuestion(question) {
+    _setQuestion(question, user) {
         this.question = question;
         this.questionFlag = true;
+        this.userAsked = user;
     }
 
     _resetQuestionState() {
         this.question = "";
         this.questionFlag = false;
+        this.userAsked = "";
     }
 }
 
