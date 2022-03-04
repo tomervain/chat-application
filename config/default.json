@@ -8,7 +8,7 @@
     },
     "elasticsearch": {
         "node": {
-            "host": "localhost",
+            "host": "elasticsearch",
             "port": 9200
         },
         "index": "chatapp"

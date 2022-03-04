@@ -14,9 +14,10 @@ class ChatbotService {
         let port = serverConfig.port;
 
         this.name = botConfig.botName,
-        this.socket = io(`ws://${host}:${port}`);
+            this.socket = io(`ws://${host}:${port}`);
         this.elasticService = new ElasticsearchService();
 
+        this.userCount = 0;
         this.questionFlag = false;
         this.question = "";
     }
@@ -32,30 +33,41 @@ class ChatbotService {
             if (message.user === this.name)
                 return;
 
-            // if question flag is on
+            // a previous question was asked before
             if (this.questionFlag) {
-                // and another question came, override (unless answer is known)
-                if (message.text.includes('?')) {
+
+                if (this._questionAsked(message.text)) {
+                    // question has an available answer
                     if (await this._attemptAnswer(message.text))
                         return;
 
-                    this.question = message.text;
+                    this._setQuestion(message.text);
+
                 } else {
-                    // else its considered a new answer
                     await this.elasticService.saveQuestionAndAnswer(this.question, message.text);
-                    this.question = "";
-                    this.questionFlag = false;
+                    this._resetQuestionState();
                 }
 
                 return;
 
-            } else if (message.text.includes('?')) {
+            } else if (this._questionAsked(message.text)) {
+
+                // new question was asked before
                 if (await this._attemptAnswer(message.text))
                     return;
 
-                this.question = message.text;
-                this.questionFlag = true;
+                this._setQuestion(message.text);
             }
+        });
+
+        this.socket.on('userAdded', () => this.userCount++);
+
+        this.socket.on('userRemoved', name => {
+            this.userCount--;
+
+            // reset conversation state if chat is empty
+            if (this.userCount == 0)
+                this._resetQuestionState();
         });
     }
 
@@ -66,8 +78,8 @@ class ChatbotService {
             return false;
 
         this._answerToChat(answer);
-        this.question = "";
-        this.questionFlag = false;
+        this._resetQuestionState();
+
         return true;
     }
 
@@ -78,6 +90,18 @@ class ChatbotService {
             user: this.name,
             text: botAnswer.replace('{ANSWER}', answer)
         });
+    }
+
+    _questionAsked = (text) => text.includes('?');
+
+    _setQuestion(question) {
+        this.question = question;
+        this.questionFlag = true;
+    }
+
+    _resetQuestionState() {
+        this.question = "";
+        this.questionFlag = false;
     }
 }
 
