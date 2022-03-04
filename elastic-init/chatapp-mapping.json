@@ -1,0 +1,14 @@
+{
+    "mappings": {
+        "properties": {
+            "name": {
+                "type": "text",
+                "analyzer": "english"
+            },
+            "answer": {
+                "type": "text",
+                "analyzer": "english"
+            }
+        }
+    }
+}

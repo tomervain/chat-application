@@ -25,7 +25,14 @@ class ElasticsearchService {
     async lookForAnswer(question) {
         const results = await this.client.search({
             index: esConfig.index,
-            query: { match_phrase: { question: question } }
+            query: { 
+                match_phrase: { 
+                    question: {
+                        query: question,
+                        slop: 3
+                    }
+                } 
+            }
         });
 
         if (results.hits.total.value === 0)
