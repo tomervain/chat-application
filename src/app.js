@@ -111,12 +111,11 @@ class App extends LitElement {
 
         this._socket.on('userAdded', async (users) => {
             this._activeUsers = users;
-            await this.shadowRoot.querySelector('.users-list').requestUpdate();
         });
 
         this._socket.on('userRemoved', async (name) => {
             delete this._activeUsers[name];
-            await this.shadowRoot.querySelector('.users-list').requestUpdate();
+            await this.shadowRoot.querySelector('app-users-list').requestUpdate();
         });
 
         this._socket.on('chatMessage', message => {

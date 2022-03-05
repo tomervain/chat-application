@@ -83,15 +83,21 @@ export class ChatBox extends LitElement {
         `;
     }
 
+    updated() {
+        const chatArea = this.shadowRoot.querySelector('.chat-area');
+        this._scrollChatToLatest(chatArea);
+    }
+
     _onInput = (e) => this._input = e.target.value;
 
     _onClick() {
-        this._dispatchSubmitNewMessageEvent(this._input);
-        this._input = "";
+        if (this._input !== "")
+            this._dispatchSubmitNewMessageEvent(this._input);
+            this._input = "";
     };
 
     _onKeyUp(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && this._input !== "") {
             this._dispatchSubmitNewMessageEvent(this._input);
             this._input = "";
         }
@@ -105,6 +111,10 @@ export class ChatBox extends LitElement {
         });
 
         this.dispatchEvent(event);
+    }
+
+    _scrollChatToLatest(chat) {
+        chat.scrollTop = -chat.scrollHeight;
     }
 }
 
